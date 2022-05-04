@@ -18,7 +18,7 @@ const useMutaion = (url: string): UseMutationResult => {
         return { ...state, [name]: value };
       });
     };
-    setAState("loading", false);
+    setAState("loading", true);
     console.log("data : ", data);
     fetch("api/users/enter", {
       method: "POST",
@@ -30,7 +30,7 @@ const useMutaion = (url: string): UseMutationResult => {
       .then((response) => response.json().catch(() => {}))
       .then((json) => setAState("data", json))
       .catch((error) => setAState("error", error))
-      .finally(() => setAState("loading", true));
+      .finally(() => setAState("loading", false));
   };
   return [mutation, fetchStates];
 };
