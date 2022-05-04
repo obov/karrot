@@ -13,7 +13,7 @@ const useMutaion = (url: string): UseMutationResult => {
     error: undefined,
   });
   const mutation = (data: any) => {
-    const setAState = (name: string, value: any) => {
+    const setAState = (name: keyof UseMutationState, value: any) => {
       setFetchStates((state) => {
         return { ...state, [name]: value };
       });
