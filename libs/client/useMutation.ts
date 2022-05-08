@@ -1,26 +1,24 @@
 import { useState } from "react";
-interface UseMutationState {
+interface UseMutationState<T> {
   loading: boolean;
-  data?: object;
+  data?: T;
   error?: object;
 }
-type UseMutationResult = [(data: any) => void, UseMutationState];
 
-const useMutaion = (url: string): UseMutationResult => {
-  const [fetchStates, setFetchStates] = useState<UseMutationState>({
+type UseMutationResult<T> = [(data: any) => void, UseMutationState<T>];
+
+const useMutaion = <T = any>(url: string): UseMutationResult<T> => {
+  const [fetchStates, setFetchStates] = useState<UseMutationState<T>>({
     loading: false,
     data: undefined,
     error: undefined,
   });
   const mutation = (data: any) => {
-    const setAState = (name: keyof UseMutationState, value: any) => {
-      setFetchStates((state) => {
-        return { ...state, [name]: value };
-      });
+    const setAState = (name: keyof UseMutationState<T>, value: any) => {
+      setFetchStates((state) => ({ ...state, [name]: value }));
     };
     setAState("loading", true);
-    console.log("data : ", data);
-    fetch("api/users/enter", {
+    fetch(url, {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
