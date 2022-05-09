@@ -14,6 +14,17 @@ const handler = async (
     where: {
       userId: user?.id,
     },
+    include: {
+      product: {
+        include: {
+          _count: {
+            select: {
+              favorites: true,
+            },
+          },
+        },
+      },
+    },
   });
   res.json({
     ok: true,

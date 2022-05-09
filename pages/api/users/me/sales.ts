@@ -10,15 +10,26 @@ const handler = async (
   const {
     session: { user },
   } = req;
-  const Sales = await client.record.findMany({
+  const sales = await client.record.findMany({
     where: {
       userId: user?.id,
       kind: "Sale",
     },
+    include: {
+      product: {
+        include: {
+          _count: {
+            select: {
+              favorites: true,
+            },
+          },
+        },
+      },
+    },
   });
   res.json({
     ok: true,
-    Sales,
+    sales,
   });
 };
 
