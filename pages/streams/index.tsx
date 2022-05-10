@@ -4,6 +4,8 @@ import FloatingButton from "@components/floating-button";
 import Layout from "@components/layout";
 import { Stream } from "@prisma/client";
 import useSWR from "swr";
+import Pagenation from "@components/pagination";
+import usePage from "@libs/client/usePage";
 
 interface StreamsResponse {
   ok: boolean;
@@ -11,11 +13,12 @@ interface StreamsResponse {
 }
 
 const Live: NextPage = () => {
-  const { data: json } = useSWR<StreamsResponse>(`/api/streams`);
+  const [{ data: json }, pageHandler] = usePage<Stream>(`/api/streams`);
+  console.log("json : ", json);
   return (
     <Layout title="live" hasTabBar>
       <div className="space-y-4 divide-y-2">
-        {json?.streams.map((stream) => (
+        {json?.list?.map((stream) => (
           <Link key={stream.id} href={`/streams/${stream.id}`}>
             <a className="pt-4 block  px-4">
               <div className="w-full rounded-md shadow-sm bg-slate-300 aspect-video" />
@@ -41,6 +44,7 @@ const Live: NextPage = () => {
             />
           </svg>
         </FloatingButton>
+        <Pagenation {...pageHandler} />
       </div>
     </Layout>
   );

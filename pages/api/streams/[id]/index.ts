@@ -14,6 +14,20 @@ const handler = async (
     where: {
       id: +id.toString(),
     },
+    include: {
+      messages: {
+        select: {
+          message: true,
+          id: true,
+          user: {
+            select: {
+              avatar: true,
+              id: true,
+            },
+          },
+        },
+      },
+    },
   });
   res.json({
     ok: true,

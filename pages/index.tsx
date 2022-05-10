@@ -6,6 +6,8 @@ import useUser from "@libs/client/useUser";
 import Head from "next/head";
 import useSWR from "swr";
 import { Product } from "@prisma/client";
+import Pagenation from "@components/pagination";
+import usePage from "@libs/client/usePage";
 
 export interface ProductWithCounts extends Product {
   _count: { [key: string]: number };
@@ -13,12 +15,14 @@ export interface ProductWithCounts extends Product {
 
 interface ProductsResponse {
   ok: boolean;
-  products: ProductWithCounts[];
+  list: ProductWithCounts[];
 }
 
 const Home: NextPage = () => {
   const { user, isLoading } = useUser();
-  const { data: dataJson } = useSWR<ProductsResponse>("/api/products");
+  // const { data: dataJson } = useSWR<ProductsResponse>("/api/products");
+  const [{ data: dataJson }, pagination] =
+    usePage<ProductWithCounts>("/api/products");
   console.log("data : ", dataJson);
   return (
     <Layout title="home" hasTabBar>
@@ -26,7 +30,7 @@ const Home: NextPage = () => {
         <title>Home</title>
       </Head>
       <div className="flex flex-col space-y-5 divide-y-2">
-        {dataJson?.products?.map((product) => (
+        {dataJson?.list?.map((product) => (
           <Item
             id={product.id}
             key={product.id}
@@ -53,6 +57,7 @@ const Home: NextPage = () => {
             />
           </svg>
         </FloatingButton>
+        <Pagenation {...pagination} />
       </div>
     </Layout>
   );

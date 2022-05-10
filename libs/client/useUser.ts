@@ -12,7 +12,7 @@ export const useProtect = () => {
   const { data, error } = useSWR(USER_API_URL);
   const router = useRouter();
   useEffect(() => {
-    if (data && !data.ok && router.pathname !== "/enter") {
+    if (data && (!data.ok || !data?.profile) && router.pathname !== "/enter") {
       router.replace("/enter");
     }
   }, [data, router]);
