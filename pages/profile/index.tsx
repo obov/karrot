@@ -16,14 +16,19 @@ interface ReviewResponse {
 
 const Profile: NextPage = () => {
   const { user } = useUser();
-  console.log("user : ", user);
   const { data } = useSWR<ReviewResponse>("/api/reviews");
-  console.log("user : ", user);
   return (
     <Layout title="profile" hasTabBar>
       <div className="py-10 px-4">
         <div className="flex items-center space-x-3">
-          <div className="w-16 h-16 bg-slate-500 rounded-full" />
+          {user?.avatar ? (
+            <img
+              src={`https://imagedelivery.net/QiWuyrvCeOnHYrH0LRUbDg/${user?.avatar}/avatar`}
+              className="w-16 h-16 bg-slate-500 rounded-full"
+            />
+          ) : (
+            <div className="w-16 h-16 bg-slate-500 rounded-full" />
+          )}
           <div className="flex flex-col ">
             <span className="font-medium text-gray-900">{user?.name}</span>
             <Link href="/profile/edit">

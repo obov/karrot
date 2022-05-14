@@ -19,9 +19,12 @@ export interface PageHandler {
 }
 
 type UsePageResult<T> = [SWRResponse<T>, PageHandler];
-const usePage = <T = any>(api: string): UsePageResult<T> => {
+const usePage = <T = any>(api: string | null): UsePageResult<T> => {
   const [page, setPage] = useState(0);
-  const SWRResponse = useSWR<ResponseData<T>>(`${api}?page=${page + ""}`);
+  const handleQMForApi = api?.includes("?") ? "&" : "?";
+  const SWRResponse = useSWR<ResponseData<T>>(
+    `${api}${handleQMForApi}page=${page + ""}`
+  );
   const { data, mutate } = SWRResponse;
   const listLength = SWRResponse.data?.list?.length ?? 0;
   const pageCutter = listLength > 10 ? 10 : listLength;

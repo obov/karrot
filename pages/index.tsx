@@ -23,7 +23,6 @@ const Home: NextPage = () => {
   // const { data: dataJson } = useSWR<ProductsResponse>("/api/products");
   const [{ data: dataJson }, pagination] =
     usePage<ProductWithCounts>("/api/products");
-  console.log("data : ", dataJson);
   return (
     <Layout title="home" hasTabBar>
       <Head>

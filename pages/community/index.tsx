@@ -5,19 +5,18 @@ import Layout from "@components/layout";
 import useSWR from "swr";
 import { Post, User } from "@prisma/client";
 import useCoords from "@libs/client/useCoords";
+import usePage from "@libs/client/usePage";
+import Pagenation from "@components/pagination";
 
 interface PostWithUser extends Post {
   user: User;
   _count: { [key: string]: number };
 }
-interface PostResponse {
-  ok: boolean;
-  postsToShow: PostWithUser[];
-}
 
 const Community: NextPage = () => {
   const { latitude, longitude } = useCoords();
-  const { data: jsonPosts } = useSWR<PostResponse>(
+
+  const [{ data: json }, pagination] = usePage<PostWithUser>(
     latitude && longitude
       ? `/api/posts?latitude=${latitude}&longitude=${longitude}`
       : null
@@ -25,7 +24,7 @@ const Community: NextPage = () => {
   return (
     <Layout title="community" hasTabBar>
       <div className="space-y-4 divide-y-[2px]">
-        {jsonPosts?.postsToShow.map((post) => (
+        {json?.list?.map((post) => (
           <Link key={post.id} href={`/community/${post.id}`}>
             <a className="flex cursor-pointer flex-col pt-4 items-start">
               <span className="flex ml-4 items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
@@ -94,6 +93,7 @@ const Community: NextPage = () => {
             ></path>
           </svg>
         </FloatingButton>
+        <Pagenation {...pagination} />
       </div>
     </Layout>
   );

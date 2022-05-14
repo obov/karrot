@@ -29,12 +29,13 @@ const handler = async (
   }
   if (req.method === "GET") {
     const {
-      query: { latitude, longitude },
+      query: { latitude, longitude, page },
     } = req;
-    const [latFloat, lngFloat] = [latitude, longitude].map((e) =>
-      parseFloat(e.toString())
-    );
-    const postsToShow = await client.post.findMany({
+    const [latFloat, lngFloat] = [latitude, longitude].map((e) => {
+      return parseFloat(e.toString());
+    });
+    console.log("latFloat, lngFloat : ", latFloat, lngFloat);
+    const list = await client.post.findMany({
       include: {
         user: {
           select: {
@@ -52,18 +53,20 @@ const handler = async (
       },
       where: {
         latitude: {
-          gte: latFloat - 0.01,
-          lte: latFloat + 0.01,
+          gte: latFloat - 0.04,
+          lte: latFloat + 0.04,
         },
         longitude: {
-          gte: lngFloat - 0.01,
-          lte: lngFloat + 0.01,
+          gte: lngFloat - 0.04,
+          lte: lngFloat + 0.04,
         },
       },
+      take: 20,
+      skip: +page * 10,
     });
     res.json({
       ok: true,
-      postsToShow,
+      list,
     });
   }
 };

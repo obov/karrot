@@ -8,18 +8,23 @@ interface LoginForm {
 }
 
 const Forms = () => {
-  const { register, watch, handleSubmit,formState:{errors},setError } = useForm<LoginForm>();
+  const {
+    register,
+    watch,
+    handleSubmit,
+    formState: { errors },
+    setError,
+  } = useForm<LoginForm>();
   const onValid = (data: LoginForm) => {
     console.log("hi I'm Valid");
-    setError("errors",{message:"Backed is offline"})
+    setError("errors", { message: "Backed is offline" });
   };
   const onInvalid = (errors: FieldErrors) => {
     console.log(errors);
-    
   };
   console.log("watch : ", watch());
-  console.log('errors : ', errors);
-  
+  console.log("errors : ", errors);
+
   return (
     <form onSubmit={handleSubmit(onValid, onInvalid)}>
       <input
