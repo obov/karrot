@@ -9,7 +9,9 @@ interface ProfileResponse {
 }
 
 export const useProtect = () => {
-  const { data, error } = useSWR(USER_API_URL);
+  const { data, error } = useSWR(
+    typeof window === "undefined" ? null : USER_API_URL
+  );
   const router = useRouter();
   useEffect(() => {
     if (data && (!data.ok || !data?.profile) && router.pathname !== "/enter") {

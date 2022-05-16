@@ -19,26 +19,24 @@ interface MutationResult {
 }
 
 const Enter: NextPage = () => {
-  const [enter, { loading, data, error }] =
+  // ---- handling login methods
+  const [enter, { loading: loadingEnter, data: dataEnter }] =
     useMutaion<MutationResult>("/api/users/enter");
-  const [confirmToken, { loading: loadingToken, data: dataToken }] =
-    useMutaion<MutationResult>("/api/users/confirm");
   const { register, reset, handleSubmit } = useForm<EnterForm>();
-  const { register: registerToken, handleSubmit: handleSubmitToken } =
-    useForm<TokenForm>();
   const [method, setMethod] = useState<"email" | "phone">("email");
-  const onEmailClick = () => {
+  const handleClick = (method: "email" | "phone") => {
     reset();
-    setMethod("email");
-  };
-  const onPhoneClick = () => {
-    reset();
-    setMethod("phone");
+    setMethod(method);
   };
   const onValid = (validForm: EnterForm) => {
-    if (loading) return;
+    if (loadingEnter) return;
     enter(validForm);
   };
+  // ----- handling login token
+  const [confirmToken, { loading: loadingToken, data: dataToken }] =
+    useMutaion<MutationResult>("/api/users/confirm");
+  const { register: registerToken, handleSubmit: handleSubmitToken } =
+    useForm<TokenForm>();
   const onValidToken = (validForm: TokenForm) => {
     if (loadingToken) return;
     confirmToken(validForm);
@@ -49,11 +47,12 @@ const Enter: NextPage = () => {
       router.push("/");
     }
   }, [dataToken, router]);
+
   return (
     <div className="mt-16 px-4">
-      <h3 className="text-3xl font-bold text-center">Enter to Carrot</h3>
+      <h3 className="text-3xl font-bold text-center">Enter to Karrot</h3>
       <div className="mt-8">
-        {data?.ok ? (
+        {dataEnter?.ok ? (
           <form
             onSubmit={handleSubmitToken(onValidToken)}
             className="flex flex-col mt-8 space-y-4"
@@ -65,7 +64,7 @@ const Enter: NextPage = () => {
               type="number"
               required
             />
-            <Button text={loadingToken ? "Loading" : "Confirm Token"} />
+            <Button loading={loadingToken} text="Confirm Token" />
           </form>
         ) : (
           <>
@@ -81,7 +80,7 @@ const Enter: NextPage = () => {
                       ? "border-orange-500 text-orange-500"
                       : "border-b-transparent text-gray-500"
                   )}
-                  onClick={onEmailClick}
+                  onClick={() => handleClick("email")}
                 >
                   Email
                 </button>
@@ -92,7 +91,7 @@ const Enter: NextPage = () => {
                       ? "border-orange-500 text-orange-500"
                       : "border-b-transparent text-gray-500"
                   )}
-                  onClick={onPhoneClick}
+                  onClick={() => handleClick("phone")}
                 >
                   Phone
                 </button>
@@ -103,27 +102,32 @@ const Enter: NextPage = () => {
               className="flex flex-col mt-8 space-y-4"
             >
               {method === "email" ? (
-                <Input
-                  register={register("email")}
-                  name="email"
-                  label="Email address"
-                  type="email"
-                  required
-                />
+                <>
+                  <Input
+                    register={register("email")}
+                    name="email"
+                    label="Email address"
+                    type="email"
+                    required
+                  />
+                  <Button text={"Get login link"} />
+                </>
               ) : null}
               {method === "phone" ? (
-                <Input
-                  register={register("phone")}
-                  name="phone"
-                  label="Phone number"
-                  type="number"
-                  kind="phone"
-                  required
-                />
-              ) : null}
-              {method === "email" ? <Button text={"Get login link"} /> : null}
-              {method === "phone" ? (
-                <Button text={loading ? "Loading" : "Get one-time password"} />
+                <>
+                  <Input
+                    register={register("phone")}
+                    name="phone"
+                    label="Phone number"
+                    type="number"
+                    kind="phone"
+                    required
+                  />
+                  <Button
+                    loading={loadingEnter}
+                    text={"Get one-time password"}
+                  />
+                </>
               ) : null}
             </form>
           </>

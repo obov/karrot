@@ -1,3 +1,5 @@
+import { cfImageApi } from "@libs/client/utils";
+import Image from "next/image";
 import Link from "next/link";
 
 interface ItemProps {
@@ -6,6 +8,7 @@ interface ItemProps {
   price: number;
   comments: number;
   hearts: number;
+  imgId: string;
 }
 
 export default function Item({
@@ -14,16 +17,23 @@ export default function Item({
   comments,
   hearts,
   id,
+  imgId,
 }: ItemProps) {
   return (
     <Link href={`/products/${id}`}>
       <a className="flex px-4 pt-5 cursor-pointer justify-between">
         <div className="flex space-x-4">
-          <div className="w-20 h-20 bg-gray-400 rounded-md" />
+          <Image
+            width={80}
+            height={80}
+            src={cfImageApi(imgId)}
+            className="bg-slate-300 object-cover rounded-md"
+            alt=""
+          />
           <div className="pt-2 flex flex-col">
             <h3 className="text-sm font-medium text-gray-900">{title}</h3>
             <span className="font-medium mt-1 text-gray-900">
-              &#8361; {price}
+              &#8361; {price.toLocaleString("kr-KR")}
             </span>
           </div>
         </div>

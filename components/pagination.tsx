@@ -4,11 +4,11 @@ import { PageHandler } from "@libs/client/usePage";
 
 export default function Pagenation(PageHandler: PageHandler) {
   return (
-    <div className="fixed border-0 aspect-[3/8] border-transparent transition-colors bottom-44 right-5 shadow-xl bg-orange-400 rounded-full w-14 flex items-center justify-center text-white">
+    <div className="fixed border-0 aspect-[3/8] border-transparent transition-colors bottom-44 right-5 shadow-xl md:bg-orange-400 bg-orange-400/50 rounded-full w-14 flex items-center justify-center text-white">
       <div className="flex flex-col items-center space-y-2">
         <div
           onClick={PageHandler.decPage}
-          className="hover:bg-orange-500 cursor-pointer rounded-full p-2 "
+          className="md:hover:bg-orange-500 hover:bg-orange-500/60 cursor-pointer rounded-full p-2 "
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -28,7 +28,7 @@ export default function Pagenation(PageHandler: PageHandler) {
         <div className="select-none text-xl ">{PageHandler.number + 1}</div>
         <div
           onClick={PageHandler.incPage}
-          className="hover:bg-orange-500 cursor-pointer rounded-full p-2 "
+          className="md:hover:bg-orange-500 hover:bg-orange-500/60 cursor-pointer rounded-full p-2 "
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

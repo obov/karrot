@@ -36,7 +36,6 @@ const StreamDetail: NextPage = () => {
     `/api/streams/${router.query.id}/messages`
   );
   const onValid = (form: MessageForm) => {
-    console.log("form : ", form);
     if (loading) return;
     reset();
     flash(
@@ -53,7 +52,7 @@ const StreamDetail: NextPage = () => {
         },
       false
     );
-    // mutMSG(form);
+    mutMSG(form);
   };
   const { data: jsonPage, mutate: flash } = useSWR<StreamResponse>(
     router.query.id ? `/api/streams/${router.query.id}` : null,
@@ -62,8 +61,13 @@ const StreamDetail: NextPage = () => {
 
   return (
     <Layout canGoBack>
-      <div className="py-10 px-4  space-y-4">
-        <div className="w-full rounded-md shadow-sm bg-slate-300 aspect-video" />
+      <div className="py-10 px-4 space-y-4">
+        <iframe
+          src={`https://iframe.videodelivery.net/${jsonPage?.stream.cloudflareId}`}
+          className="w-full aspect-video rounded-md shadow-sm"
+          allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
+          allowFullScreen={true}
+        ></iframe>
         <div className="mt-5">
           <h1 className="text-3xl font-bold text-gray-900">
             {jsonPage?.stream?.name}
@@ -72,6 +76,17 @@ const StreamDetail: NextPage = () => {
             &#8361;{jsonPage?.stream?.price}
           </span>
           <p className=" my-6 text-gray-700">{jsonPage?.stream?.description}</p>
+          <div className="bg-orange-400 p-5 rounded-md overflow-scroll flex flex-col space-y-3">
+            <span>Stream Keys (secret)</span>
+            <span className="text-white">
+              <span className="font-medium text-gray-800">URL:</span>{" "}
+              {jsonPage?.stream.cloudflareUrl}
+            </span>
+            <span className="text-white">
+              <span className="font-medium text-gray-800">Key:</span>{" "}
+              {jsonPage?.stream.cloudflareKey}
+            </span>
+          </div>
         </div>
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Live Chat</h2>

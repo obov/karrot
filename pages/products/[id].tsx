@@ -6,8 +6,9 @@ import useSWR, { useSWRConfig } from "swr";
 import Link from "next/link";
 import { Product, User } from "@prisma/client";
 import useMutaion from "@libs/client/useMutation";
-import { cls } from "@libs/client/utils";
+import { cfImageApi, cls } from "@libs/client/utils";
 import useUser from "@libs/client/useUser";
+import Image from "next/image";
 
 interface ProductWithUserAndCounts extends Product {
   user: User;
@@ -41,9 +42,30 @@ const ItemDetail: NextPage = () => {
     <Layout canGoBack>
       <div className="px-4  py-4">
         <div className="mb-8">
-          <div className="h-96 bg-slate-300" />
+          {itemJson?.product?.image ? (
+            <div className="relative py-80">
+              <Image
+                layout="fill"
+                src={cfImageApi(itemJson?.product?.image)}
+                className="bg-slate-300 object-cover"
+                alt=""
+              />
+            </div>
+          ) : (
+            <div className="h-96 bg-slate-300" />
+          )}
           <div className="flex cursor-pointer py-3 border-t border-b items-center space-x-3">
-            <div className="w-12 h-12 rounded-full bg-slate-300" />
+            {itemJson?.product?.user?.avatar ? (
+              <Image
+                width={48}
+                height={48}
+                src={cfImageApi(itemJson?.product?.user?.avatar, "avatar")}
+                className="w-12 h-12 rounded-full bg-slate-300"
+                alt=""
+              />
+            ) : (
+              <div className="w-12 h-12 rounded-full bg-slate-300" />
+            )}
             <div>
               <p className="text-sm font-medium text-gray-700">
                 {itemJson?.product?.user?.name}
@@ -60,7 +82,8 @@ const ItemDetail: NextPage = () => {
               {itemJson?.product?.name}
             </h1>
             <span className="text-2xl block mt-3 text-gray-900">
-              &#8361;{itemJson?.product?.price}
+              <span className="text-base text-gray-600">&#8361;&nbsp;</span>
+              {itemJson?.product?.price.toLocaleString("ko-KR")}
             </span>
             <p className=" my-6 text-gray-700">
               {itemJson?.product?.description}

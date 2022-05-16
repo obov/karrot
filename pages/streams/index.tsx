@@ -6,22 +6,23 @@ import { Stream } from "@prisma/client";
 import useSWR from "swr";
 import Pagenation from "@components/pagination";
 import usePage from "@libs/client/usePage";
-
-interface StreamsResponse {
-  ok: boolean;
-  streams: Stream[];
-}
+import Image from "next/image";
 
 const Live: NextPage = () => {
   const [{ data: json }, pageHandler] = usePage<Stream>(`/api/streams`);
-  console.log("json : ", json);
   return (
     <Layout title="live" hasTabBar>
       <div className="space-y-4 divide-y-2">
         {json?.list?.map((stream) => (
           <Link key={stream.id} href={`/streams/${stream.id}`}>
             <a className="pt-4 block  px-4">
-              <div className="w-full rounded-md shadow-sm bg-slate-300 aspect-video" />
+              <div className="w-full rounded-md shadow-sm bg-slate-300 aspect-video">
+                <Image
+                  layout="fill"
+                  src={`https://videodelivery.net/${stream.cloudflareId}/thumbnails/thumbnail.jpg?time=68s&height=270`}
+                  alt=""
+                />
+              </div>
               <h1 className="text-2xl mt-2 font-bold text-gray-900">
                 {stream.name}
               </h1>
