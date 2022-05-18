@@ -18,6 +18,7 @@ const ProductList = ({ kind }: { kind: KindsOfProduct }) => {
         <Item
           id={item.id}
           key={item.id}
+          imgId={item.product.image}
           title={item.product.name}
           price={item.product.price}
           comments={item.product._count.favorites}
