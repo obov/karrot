@@ -8,6 +8,7 @@ import { cls, jsonSP } from "@libs/client/utils";
 import Image from "next/image";
 import { withSsrSession } from "@libs/server/withSession";
 import client from "@libs/server/client";
+import { Suspense } from "react";
 
 interface ReviewWithUser extends Review {
   writer: User;
@@ -151,47 +152,57 @@ const Profile: NextPage = () => {
     </Layout>
   );
 };
-const Page: NextPage<{ profile: User; reviews: ReviewWithUser[] }> = ({
-  profile,
-  reviews,
-}) => {
-  return (
-    <SWRConfig
-      value={{
-        fallback: {
-          "/api/users/me": { ok: true, profile },
-          "/api/reviews": { ok: true, reviews },
-        },
-      }}
-    >
-      <Profile />
-    </SWRConfig>
-  );
-};
+const Page: NextPage = () =>
+  // {
+  //<{ profile: User; reviews: ReviewWithUser[] }>
+  // profile,
+  // reviews,
+  // }
+  {
+    return (
+      <SWRConfig
+        value={{
+          suspense: true,
+          // fallback: {
+          //   "/api/users/me": { ok: true, profile },
+          //   "/api/reviews": { ok: true, reviews },
+          // },
+        }}
+      >
+        <Suspense fallback={<span>loading...</span>}>
+          <Profile />
+        </Suspense>
+      </SWRConfig>
+    );
+  };
 
-export const getServerSideProps = withSsrSession(
+/* export const getServerSideProps = withSsrSession(
   async ({ req }: NextPageContext) => {
-    const profile = await client.user.findUnique({
-      where: { id: req?.session.user?.id },
-    });
-    const reviews = await client.review.findMany({
-      where: {
-        listenerId: req?.session.user?.id,
-      },
-      include: {
-        writer: {
-          select: {
-            id: true,
-            name: true,
-            avatar: true,
+    const profile = jsonSP(
+      await client.user.findUnique({
+        where: { id: req?.session.user?.id },
+      })
+    );
+    const reviews = jsonSP(
+      await client.review.findMany({
+        where: {
+          listenerId: req?.session.user?.id,
+        },
+        include: {
+          writer: {
+            select: {
+              id: true,
+              name: true,
+              avatar: true,
+            },
           },
         },
-      },
-    });
+      })
+    );
 
     return {
-      props: { profile: jsonSP(profile), reviews: jsonSP(reviews) },
+      props: { profile, reviews },
     };
   }
-);
+); */
 export default Page;
