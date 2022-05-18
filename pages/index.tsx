@@ -6,6 +6,9 @@ import Head from "next/head";
 import { Product } from "@prisma/client";
 import Pagenation from "@components/pagination";
 import usePage from "@libs/client/usePage";
+import client from "@libs/server/client";
+import { jsonSP } from "@libs/client/utils";
+import { SWRConfig } from "swr";
 
 export interface ProductWithCounts extends Product {
   _count: { [key: string]: number };
@@ -25,7 +28,7 @@ const Home: NextPage = () => {
             title={product.name}
             price={product.price}
             comments={1}
-            hearts={product._count.favorites}
+            hearts={product._count?.favorites}
           />
         ))}
         <FloatingButton href="/products/upload">
@@ -51,4 +54,28 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+const Page: NextPage<{ list: ProductWithCounts[] }> = ({ list }) => {
+  return (
+    <SWRConfig
+      value={{
+        fallback: {
+          "/api/products?page=0": {
+            ok: true,
+            list,
+          },
+        },
+      }}
+    >
+      <Home />
+    </SWRConfig>
+  );
+};
+export const getServerSideProps = async () => {
+  console.log("ssr");
+  const products = await client.product.findMany({});
+  return {
+    props: { list: jsonSP(products) },
+  };
+};
+
+export default Page;

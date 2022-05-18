@@ -4,4 +4,5 @@ const cfImageApi = (hash: string, vaiant: string = "public"): string => {
     ? "/tree.jpg"
     : `https://imagedelivery.net/QiWuyrvCeOnHYrH0LRUbDg/${hash}/${vaiant}`;
 };
-export { cls, cfImageApi };
+const jsonSP = (json: any) => JSON.parse(JSON.stringify(json));
+export { cls, cfImageApi, jsonSP };
