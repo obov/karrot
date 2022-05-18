@@ -105,7 +105,7 @@ export const getStaticProps = async () => {
   const posts = jsonSP(await client.post.findMany({ include: { user: true } }));
   return {
     props: { list: posts },
-    revalidate: 20,
+    // revalidate: 20,
   };
 };
 
