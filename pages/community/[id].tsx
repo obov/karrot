@@ -75,7 +75,7 @@ const CommunityPostDetail: NextPage = () => {
     }
   }, [jsonAns, reset, postFlash]);
   return (
-    <Layout canGoBack>
+    <Layout canGoBack seoTitle="Community">
       <div>
         <span className="inline-flex my-3 ml-4 items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
           동네질문
@@ -150,7 +150,7 @@ const CommunityPostDetail: NextPage = () => {
                   {answer.user.name}
                 </span>
                 <span className="text-xs text-gray-500 block ">
-                  {answer.createdAt}
+                  {answer.createdAt.toDateString()}
                 </span>
                 <p className="text-gray-700 mt-2">{answer.answer}</p>
               </div>

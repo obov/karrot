@@ -23,7 +23,7 @@ const usePage = <T = any>(api: string | null): UsePageResult<T> => {
   const [page, setPage] = useState(0);
   const handleQMForApi = api?.includes("?") ? "&" : "?";
   const SWRResponse = useSWR<ResponseData<T>>(
-    `${api}${handleQMForApi}page=${page + ""}`
+    api ? `${api}${handleQMForApi}page=${page + ""}` : null
   );
   const { data, mutate } = SWRResponse;
   const listLength = SWRResponse.data?.list?.length ?? 0;

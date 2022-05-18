@@ -22,7 +22,7 @@ const Community: NextPage = () => {
       : null
   );
   return (
-    <Layout title="community" hasTabBar>
+    <Layout title="community" hasTabBar seoTitle="Community">
       <div className="space-y-4 divide-y-[2px]">
         {json?.list?.map((post) => (
           <Link key={post.id} href={`/community/${post.id}`}>
@@ -36,7 +36,7 @@ const Community: NextPage = () => {
               </div>
               <div className="mt-5 px-4 flex items-center justify-between w-full text-gray-500 font-medium text-xs">
                 <span>{post.user.name}</span>
-                <span>{post.createdAt}</span>
+                <span>{post.createdAt.toDateString()}</span>
               </div>
               <div className="flex px-4 space-x-5 mt-3 text-gray-700 py-2.5 border-t   w-full">
                 <span className="flex space-x-2 items-center text-sm">

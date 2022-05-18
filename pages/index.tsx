@@ -15,10 +15,7 @@ const Home: NextPage = () => {
   const [{ data: json }, pagination] =
     usePage<ProductWithCounts>("/api/products");
   return (
-    <Layout title="home" hasTabBar>
-      <Head>
-        <title>Home</title>
-      </Head>
+    <Layout title="home" hasTabBar seoTitle="Home">
       <div className="flex flex-col space-y-5 divide-y-2">
         {json?.list?.map((product) => (
           <Item

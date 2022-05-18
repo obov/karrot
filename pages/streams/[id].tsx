@@ -60,7 +60,7 @@ const StreamDetail: NextPage = () => {
   );
 
   return (
-    <Layout canGoBack>
+    <Layout canGoBack seoTitle="Live">
       <div className="py-10 px-4 space-y-4">
         <iframe
           src={`https://iframe.videodelivery.net/${jsonPage?.stream.cloudflareId}`}

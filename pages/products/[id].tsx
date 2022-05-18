@@ -39,7 +39,7 @@ const ItemDetail: NextPage = () => {
     // mutate("/api/users/me", { ok: false }, false);
   };
   return (
-    <Layout canGoBack>
+    <Layout canGoBack seoTitle="Products">
       <div className="px-4  py-4">
         <div className="mb-8">
           {itemJson?.product?.image ? (
@@ -60,7 +60,7 @@ const ItemDetail: NextPage = () => {
                 width={48}
                 height={48}
                 src={cfImageApi(itemJson?.product?.user?.avatar, "avatar")}
-                className="w-12 h-12 rounded-full bg-slate-300"
+                className="w-12 h-12 rounded-full bg-slate-300 -z-10"
                 alt=""
               />
             ) : (

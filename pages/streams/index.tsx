@@ -11,7 +11,7 @@ import Image from "next/image";
 const Live: NextPage = () => {
   const [{ data: json }, pageHandler] = usePage<Stream>(`/api/streams`);
   return (
-    <Layout title="live" hasTabBar>
+    <Layout title="live" hasTabBar seoTitle="Live">
       <div className="space-y-4 divide-y-2">
         {json?.list?.map((stream) => (
           <Link key={stream.id} href={`/streams/${stream.id}`}>

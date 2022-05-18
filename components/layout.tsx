@@ -2,19 +2,30 @@ import { route } from "next/dist/server/router";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { cls } from "@libs/client/utils";
+import Head from "next/head";
 
 interface LayoutProps {
   title?: string;
   canGoBack?: boolean;
   hasTabBar?: boolean;
   children: React.ReactNode;
+  seoTitle: string;
 }
 
-function Layout({ title, canGoBack, hasTabBar, children }: LayoutProps) {
+function Layout({
+  title,
+  canGoBack,
+  hasTabBar,
+  children,
+  seoTitle,
+}: LayoutProps) {
   const router = useRouter();
   const handleClick = () => router.back();
   return (
     <div>
+      <Head>
+        <title>{seoTitle + " | Karrot"}</title>
+      </Head>
       <div className="bg-white w-full h-12 max-w-xl justify-center text-lg px-10 font-medium  fixed text-gray-800 border-b top-0  flex items-center">
         {canGoBack ? (
           <button onClick={handleClick} className="absolute left-4">
