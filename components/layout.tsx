@@ -1,4 +1,3 @@
-import { route } from "next/dist/server/router";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { cls } from "@libs/client/utils";
