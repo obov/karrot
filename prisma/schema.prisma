@@ -40,6 +40,8 @@ model Token {
     userId    Int
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+
+    @@index([userId])
 }
 
 model Product {
@@ -54,6 +56,8 @@ model Product {
     description String     @db.MediumText
     favorites   Favorite[]
     records     Record[]
+
+    @@index([userId])
 }
 
 model Favorite {
@@ -64,6 +68,9 @@ model Favorite {
     updatedAt DateTime @updatedAt
     userId    Int
     productId Int
+
+    @@index([userId])
+    @@index([productId])
 }
 
 model Record {
@@ -75,6 +82,9 @@ model Record {
     userId    Int
     productId Int
     kind      Kind
+
+    @@index([userId])
+    @@index([productId])
 }
 
 enum Kind {
@@ -93,6 +103,8 @@ model Post {
     longitude  Float?
     answers    Answer[]
     wonderings Wondering[]
+
+    @@index([userId])
 }
 
 model Answer {
@@ -104,6 +116,9 @@ model Answer {
     post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
     postId    Int
     answer    String   @db.MediumText
+
+    @@index([userId])
+    @@index([postId])
 }
 
 model Wondering {
@@ -115,6 +130,8 @@ model Wondering {
     post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
     postId    Int
 
+    @@index([userId])
+    @@index([postId])
 }
 
 model Review {
@@ -127,6 +144,9 @@ model Review {
     writerId   Int
     listenerId Int
     score      Int      @default(1)
+
+    @@index([writerId])
+    @@index([listenerId])
 }
 
 model Stream {
@@ -142,6 +162,8 @@ model Stream {
     cloudflareId  String
     cloudflareUrl String
     cloudflareKey String
+
+    @@index([userId])
 }
 
 model Message {
@@ -153,4 +175,7 @@ model Message {
     message   String   @db.MediumText
     stream    Stream   @relation(fields: [streamId], references: [id])
     streamId  Int
+
+    @@index([userId])
+    @@index([streamId])
 }

@@ -5,4 +5,6 @@ const cfImageApi = (hash: string, vaiant: string = "public"): string => {
     : `https://imagedelivery.net/QiWuyrvCeOnHYrH0LRUbDg/${hash}/${vaiant}`;
 };
 const jsonSP = (json: any) => JSON.parse(JSON.stringify(json));
-export { cls, cfImageApi, jsonSP };
+const delaying = (sec: number) =>
+  new Promise((resolve) => setTimeout(resolve, sec * 1000));
+export { cls, cfImageApi, jsonSP, delaying };
