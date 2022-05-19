@@ -41,7 +41,7 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({
     toggleFavortie({});
     if (!itemJson) return;
     mutateBounded((prev) => prev && { ...prev, isLiked: !prev.isLiked }, false);
-    // mutate("/api/users/me", { ok: false }, false);
+    mutate("/api/users/me", { ok: false }, false);
   };
   return (
     <Layout canGoBack seoTitle="Products">
